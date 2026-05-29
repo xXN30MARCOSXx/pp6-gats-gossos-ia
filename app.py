@@ -17,14 +17,19 @@ uploaded_file = st.file_uploader(
     type=["jpg", "jpeg", "png"]
 )
 
-if not os.path.exists("model_gats_gossos.json") or not os.path.exists("model_gats_gossos.weights.h5"):
+# ✅ Ruta absoluta relativa al fitxer app.py
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+json_path = os.path.join(BASE_DIR, "model_gats_gossos.json")
+weights_path = os.path.join(BASE_DIR, "model_gats_gossos.weights.h5")
+
+if not os.path.exists(json_path) or not os.path.exists(weights_path):
     st.error("El model no s'ha trobat. Revisa que els fitxers del model estiguin pujats correctament al repositori.")
 else:
-    with open("model_gats_gossos.json", "r") as json_file:
+    with open(json_path, "r") as json_file:
         model_json = json_file.read()
 
     model = model_from_json(model_json)
-    model.load_weights("model_gats_gossos.weights.h5")
+    model.load_weights(weights_path)
 
     if uploaded_file is not None:
         try:
